@@ -107,7 +107,7 @@ def bank_operation(user):
         bank_operation(user)
 
 
-def deposit_operation():
+def deposit_operation(user):
     current_balance = user[4]
     print("****** Make a Deposit ******")
     print('Your account balance is: \n', int(current_balance))
@@ -172,7 +172,7 @@ def logout():
 
 # Datetime function
 def dt_string():
-    dt_string = now.strftime("%B %d, %Y %H:%M")  # type: str
+    dt_string = now.strftime("==== %B %d, %Y %H:%M ====")  # type: str
     print(dt_string)
 
 
