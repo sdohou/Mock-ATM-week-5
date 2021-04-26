@@ -2,12 +2,12 @@ import random
 import validation
 import database
 from getpass import getpass
+import os
 
 # Datetime object- current date and time
 from datetime import datetime
 
 now = datetime.now()
-
 
 # Initializing the system (Welcome Page)
 def init():
@@ -42,12 +42,15 @@ def login():
         password = getpass("What is your password? \n")
 
         user = database.authenticated_user(account_number_from_user, password)
-        print(user)
+
         if user:
+            file = open("data/auth_session/session.txt", 'w+')
+            file.close()
             bank_operation(user)
 
-        print('Invalid account number or password')
-        login()
+        else:
+            print('Invalid account number or password')
+            login()
 
     else:
         print("Account Number Invalid: check that you have up to 10 digits and only integers")
@@ -124,6 +127,9 @@ def deposit_operation(user):
 
     print('Transaction complete. Your balance is now: {}'.format(current_balance))
 
+    file = open("data/auth_session/session.txt", 'a')
+    file.write('Customer deposited {}'.format(deposit_amount))
+    file.close()
     return exit()
 
 
@@ -145,6 +151,9 @@ def withdrawal_operation(user):
     current_balance = int(current_balance) - int(withdrawal_amount)
     print('Your current balance is now: {}'.format(current_balance))
 
+    file = open("data/auth_session/session.txt", 'a')
+    file.write('Customer withdrew {}'.format(withdrawal_amount))
+    file.close()
     return exit()
 
 
@@ -163,16 +172,17 @@ def get_end_balance(user_details):
 
 def exit():
     print('Session complete. Welcome back to the Main Menu.')
-
+    bank_operation(user)
 
 def logout():
     print('Thank you for choosing Python Bank. See you next time!')
+    os.remove("data/auth_session/session.txt")
     login()
 
 
 # Datetime function
 def dt_string():
-    dt_string = now.strftime("==== %B %d, %Y %H:%M ====")  # type: str
+    dt_string = now.strftime(" ======= %B %d, %Y %H:%M ======= ")  # type: str
     print(dt_string)
 
 
